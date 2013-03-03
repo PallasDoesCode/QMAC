@@ -1,0 +1,13 @@
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\bin\Debug\QMAC.exe
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\bin\Debug\QMAC.pdb
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\MainWindow.g.cs
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\App.g.cs
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\QMAC_MarkupCompile.cache
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\QMAC_MarkupCompile.lref
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\MainWindow.baml
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\QMAC.g.resources
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\QMAC.Properties.Resources.resources
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\QMAC.csproj.GenerateResource.Cache
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\QMAC.exe
+C:\Users\Tyler\SkyDrive\Software Archive\QMAC\QMAC\obj\Debug\QMAC.pdb
