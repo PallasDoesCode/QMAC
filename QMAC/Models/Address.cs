@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 
@@ -8,73 +9,89 @@ namespace QMAC.Models
 {
     class Address
     {
-        private string _ethernetMAC;
-        private string _wirelessMAC;
-        private string _MACAddress;
+        SystemInfo sys;
+        private string _ipAddress;
+        private List<string> _addressList;
 
         /*
          *  Using the get accessor below we will be able to read the
-         *  MAC Address and assign it to the data binding of the
+         *  IP Address and assign it to the data binding of the
          *  TextBlock. Since we are not using a set accessor this will
          *  make the property Read-Only. Also since this property is read only,
-         *  we have to assign the MAC address to the fields in this class.
+         *  we have to assign the IP address to the fields in this class.
          */
 
         public Address()
         {
-            _ethernetMAC = getEthernetMAC();
-            _wirelessMAC = getWirelessMAC();
-            _MACAddress = getMacAddress();
+            sys = new SystemInfo();
+            _ipAddress = getCurrentIPAddress();
+            _addressList = getMacAddresses();
         }
 
-        public string EthernetMAC
+        public List<string> PhysicalAddresses
         {
-            get { return _ethernetMAC; }
+            get { return _addressList; }
         }
 
-        public string WirelessMAC
+        public string IPAddress
         {
-            get { return _wirelessMAC; }
+            get { return _ipAddress; }
         }
 
-        public string PhysicalAddress
+        private string getCurrentIPAddress()
         {
-            get { return _MACAddress; }
-        }
+            string ip = "";
+            bool ipStatus = false;
 
-        private string getEthernetMAC()
-        {
-            string mac = "";
-
-            foreach (NetworkInterface address in NetworkInterface.GetAllNetworkInterfaces())
+            foreach (NetworkInterface adapters in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (address.NetworkInterfaceType.Equals(NetworkInterfaceType.Ethernet) && address.OperationalStatus.Equals(OperationalStatus.Up))
+                if (ipStatus.Equals(false))
                 {
-                    mac = address.GetPhysicalAddress().ToString();
+                    IPInterfaceProperties ipProperties = adapters.GetIPProperties();
+                    foreach (IPAddressInformation unicast in ipProperties.UnicastAddresses)
+                    {
+                        ip = unicast.Address.ToString();
+                        ipStatus = true;
+                    }
                 }
             }
 
-            return mac;
+            return ip;
         }
 
-        private string getWirelessMAC()
+        private List<string> getMacAddresses()
         {
-            string mac = "";
+            List<string> macList = new List<string>();
             foreach (NetworkInterface address in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (address.NetworkInterfaceType.Equals(NetworkInterfaceType.Wireless80211) && address.OperationalStatus.Equals(OperationalStatus.Up))
+                // We want the application to ignore any network adapters that were created by VirtualBox & VMware software
+                // That is why we have this statement.
+                if ((address.Description.ToString().Contains("VirtualBox")) && (address.Description.ToString().Contains("VMware")))
                 {
-                    mac = address.GetPhysicalAddress().ToString();
+                    // do nothing   
+                }
+
+                // The else if allows us to avoid accidentally getting a MAC Address from a Tunnel adapter
+                else if (address.NetworkInterfaceType.Equals(NetworkInterfaceType.Tunnel))
+                {
+                    // do nothing
+                }
+
+                else
+                {
+                    if (address.NetworkInterfaceType.Equals(NetworkInterfaceType.Ethernet) && address.OperationalStatus.Equals(OperationalStatus.Up))
+                    {
+                        macList.Add(address.GetPhysicalAddress().ToString() + "\t#\t" + sys.ComputerName + "-wired");
+                    }
+
+                    else if (address.NetworkInterfaceType.Equals(NetworkInterfaceType.Wireless80211) && address.OperationalStatus.Equals(OperationalStatus.Up))
+                    {
+                        macList.Add(address.GetPhysicalAddress().ToString() + "\t#\t" + sys.ComputerName + "-wireless");
+                    }
                 }
             }
-
-            return mac;
-        }
-
-        private string getMacAddress()
-        {
-            string mac = "";
-            return mac;
+            
+            return macList;
         }
     }
 }
