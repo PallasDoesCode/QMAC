@@ -1,9 +1,6 @@
-﻿using System;
+﻿using QMAC.Extensions;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.NetworkInformation;
-using System.Text;
 
 namespace QMAC.Models
 {
@@ -41,17 +38,20 @@ namespace QMAC.Models
         private string getCurrentIPAddress()
         {
             string ip = "";
-            bool ipStatus = false;
 
-            foreach (NetworkInterface adapters in NetworkInterface.GetAllNetworkInterfaces())
+            foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (ipStatus.Equals(false))
+                if ((adapter.isEthernet() || adapter.isWireless()) && (!adapter.isVirtualBoxAdapter())
+                    && (!adapter.isVMwareAdapter()))
                 {
-                    IPInterfaceProperties ipProperties = adapters.GetIPProperties();
-                    foreach (IPAddressInformation unicast in ipProperties.UnicastAddresses)
+                    IPInterfaceProperties ipProperties = adapter.GetIPProperties();
+                    foreach (UnicastIPAddressInformation address in ipProperties.UnicastAddresses)
                     {
-                        ip = unicast.Address.ToString();
-                        ipStatus = true;
+                        if (address.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork
+                            && adapter.OperationalStatus == OperationalStatus.Up)
+                        {
+                            ip = address.Address.ToString();
+                        }
                     }
                 }
             }
@@ -66,31 +66,31 @@ namespace QMAC.Models
             {
                 // We want the application to ignore any network adapters that were created by VirtualBox & VMware software
                 // That is why we have this statement.
-                if ((address.Description.ToString().Contains("VirtualBox")) && (address.Description.ToString().Contains("VMware")))
+                if ((address.isVirtualBoxAdapter()) && (address.isVMwareAdapter()))
                 {
                     // do nothing   
                 }
 
                 // The else if allows us to avoid accidentally getting a MAC Address from a Tunnel adapter
-                else if (address.NetworkInterfaceType.Equals(NetworkInterfaceType.Tunnel))
+                else if (address.isTunnel())
                 {
                     // do nothing
                 }
 
                 else
                 {
-                    if (address.NetworkInterfaceType.Equals(NetworkInterfaceType.Ethernet) && address.OperationalStatus.Equals(OperationalStatus.Up))
+                    if (address.isEthernet())
                     {
                         macList.Add(address.GetPhysicalAddress().ToString() + "\t#\t" + sys.ComputerName + "-wired");
                     }
 
-                    else if (address.NetworkInterfaceType.Equals(NetworkInterfaceType.Wireless80211) && address.OperationalStatus.Equals(OperationalStatus.Up))
+                    else if (address.isWireless())
                     {
                         macList.Add(address.GetPhysicalAddress().ToString() + "\t#\t" + sys.ComputerName + "-wireless");
                     }
                 }
             }
-            
+
             return macList;
         }
     }

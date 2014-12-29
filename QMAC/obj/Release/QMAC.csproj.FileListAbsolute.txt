@@ -11,3 +11,4 @@ C:\Users\tbhughes\Documents\GitHub\Repositories\QMAC\QMAC\obj\Release\QMAC.Prope
 C:\Users\tbhughes\Documents\GitHub\Repositories\QMAC\QMAC\obj\Release\QMAC.csproj.GenerateResource.Cache
 C:\Users\tbhughes\Documents\GitHub\Repositories\QMAC\QMAC\obj\Release\QMAC.exe
 C:\Users\tbhughes\Documents\GitHub\Repositories\QMAC\QMAC\obj\Release\QMAC.pdb
+C:\Users\tbhughes\Documents\GitHub\Repositories\QMAC\QMAC\obj\Release\QMAC.csprojResolveAssemblyReference.cache

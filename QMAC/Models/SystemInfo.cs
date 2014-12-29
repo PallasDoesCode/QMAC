@@ -21,7 +21,7 @@ namespace QMAC.Models
 
         public string getComputerName()
         {
-            return Environment.MachineName;
+            return Environment.MachineName.ToLowerInvariant();
         }
     }
 }
