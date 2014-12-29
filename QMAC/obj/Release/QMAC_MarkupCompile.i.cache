@@ -4,15 +4,15 @@
 winexe
 C#
 .cs
-C:\Users\tbhughes\Documents\GitHub\Repositories\QMAC\QMAC\obj\Debug\
+C:\Users\tbhughes\Documents\GitHub\Repositories\QMAC\QMAC\obj\Release\
 QMAC
 none
 false
-DEBUG;TRACE
+TRACE
 C:\Users\tbhughes\Documents\GitHub\Repositories\QMAC\QMAC\App.xaml
 11151548125
 
-10194455267
+11-651158047
 121654848548
 MainWindow.xaml;
 
