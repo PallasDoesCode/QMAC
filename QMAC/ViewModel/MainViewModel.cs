@@ -29,7 +29,6 @@ namespace QMAC.ViewModel
         public List<string> LocationList
         {
             get { return location.site; }
-            set;
         }
 
         public List<string> LocationsPicked { get; set; }
