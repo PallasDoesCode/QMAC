@@ -14,16 +14,12 @@ namespace QMAC.ViewModel
     {
         Address address;
         Location location;
-        private List<string> _locationPicked;
-        private string _ipAddress;
-        private string _message;
         private DelegateCommand _exportCommand;
 
         public MainViewModel()
         {
             address = new Address();
             location = new Location();
-            _ipAddress = address.IPAddress;
         }
 
         public List<string> LocationList
@@ -33,7 +29,10 @@ namespace QMAC.ViewModel
 
         public List<string> LocationsPicked { get; set; }
 
-        public string Address { get; set; }
+        public string Address
+        {
+            get { return address.IPAddress; }
+        }
 
         public string Message { get; set; }
 
