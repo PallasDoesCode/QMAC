@@ -76,7 +76,6 @@
     </ApplicationDefinition>
     <Compile Include="Extensions\NetworkExtension.cs" />
     <Compile Include="Models\SystemInfo.cs" />
-    <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

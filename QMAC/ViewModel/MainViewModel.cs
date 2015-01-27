@@ -1,11 +1,10 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
 using QMAC.Models;
-using QMAC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Input;
 
 namespace QMAC.ViewModel
 {
@@ -14,12 +13,14 @@ namespace QMAC.ViewModel
     {
         Address address;
         Location location;
-        private DelegateCommand _exportCommand;
+        private RelayCommand _exportCommand;
 
         public MainViewModel()
         {
             address = new Address();
             location = new Location();
+
+            MessageVisibility = false;
         }
 
         public List<string> LocationList
@@ -29,6 +30,8 @@ namespace QMAC.ViewModel
 
         public List<string> LocationsPicked { get; set; }
 
+        public bool MessageVisibility { get; set; }
+
         public string Address
         {
             get { return address.IPAddress; }
@@ -36,7 +39,7 @@ namespace QMAC.ViewModel
 
         public string Message { get; set; }
 
-        public ICommand ExportCommand
+        public RelayCommand ExportCommand
         {
             get
             {
@@ -44,10 +47,11 @@ namespace QMAC.ViewModel
                 {
                     // We are passing the o object to the DelegateCommand class and telling it
                     // to execute the ExportList method.
-                    _exportCommand = new DelegateCommand((o) => this.ExportList());
+                    _exportCommand = new RelayCommand(ExportList);
                 }
 
                 return _exportCommand;
+
             }
         }
 
@@ -55,7 +59,7 @@ namespace QMAC.ViewModel
         {
             string folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
             string fileName = folder + "\\" + LocationsPicked + ".txt";
-
+            
             try
             {
                 using (StreamWriter writer = new StreamWriter(fileName, true))
@@ -74,6 +78,11 @@ namespace QMAC.ViewModel
                 Console.WriteLine("The file was not written.");
                 Console.WriteLine(ioe.Message);
                 Console.WriteLine(ioe.StackTrace);
+            }
+
+            finally
+            {
+                MessageVisibility = true;
             }
         }
     }
