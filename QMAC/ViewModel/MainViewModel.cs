@@ -5,6 +5,9 @@ using QMAC.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Windows;
 
 namespace QMAC.ViewModel
 {
@@ -13,7 +16,7 @@ namespace QMAC.ViewModel
     {
         Address address;
         Location location;
-        private RelayCommand _exportCommand;
+        private RelayCommand<object> _exportCommand;
 
         public MainViewModel()
         {
@@ -32,6 +35,10 @@ namespace QMAC.ViewModel
 
         public bool MessageVisibility { get; set; }
 
+        public string Username { get; set; }
+
+        public SecureString Password { get; set; }
+
         public string Address
         {
             get { return address.IPAddress; }
@@ -39,7 +46,7 @@ namespace QMAC.ViewModel
 
         public string Message { get; set; }
 
-        public RelayCommand ExportCommand
+        public RelayCommand<object> ExportCommand
         {
             get
             {
@@ -47,7 +54,7 @@ namespace QMAC.ViewModel
                 {
                     // We are passing the o object to the DelegateCommand class and telling it
                     // to execute the ExportList method.
-                    _exportCommand = new RelayCommand(ExportList);
+                    _exportCommand = new RelayCommand<object>(ExportList);
                 }
 
                 return _exportCommand;
@@ -55,34 +62,61 @@ namespace QMAC.ViewModel
             }
         }
 
-        public void ExportList()
+        public void ExportList(object parameter)
         {
-            string folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
-            string fileName = folder + "\\" + LocationsPicked + ".txt";
-            
-            try
+            var passwordContainer = parameter as IPassword;
+            if (passwordContainer != null)
             {
-                using (StreamWriter writer = new StreamWriter(fileName, true))
+                var securePassword = passwordContainer.Password;
+                var password = ConvertToUnsecureString(securePassword);
+
+                string folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
+                string fileName = folder + "\\" + LocationsPicked + ".txt";
+
+                try
                 {
-                    for (int i = 0; i < address.PhysicalAddresses.Count; i++)
+                    using (StreamWriter writer = new StreamWriter(fileName, true))
                     {
-                        writer.WriteLine(address.PhysicalAddresses[i]);
+                        for (int i = 0; i < address.PhysicalAddresses.Count; i++)
+                        {
+                            writer.WriteLine(address.PhysicalAddresses[i]);
+                        }
                     }
+
+                    Message = "The MAC Address was exported successfully.";
                 }
 
-                Message = "The MAC Address was exported successfully.";
+                catch (IOException ioe)
+                {
+                    Console.WriteLine("The file was not written.");
+                    Console.WriteLine(ioe.Message);
+                    Console.WriteLine(ioe.StackTrace);
+                }
+
+                finally
+                {
+                    MessageVisibility = true;
+                }
+            }
+        }
+
+        private string ConvertToUnsecureString(SecureString password)
+        {
+            if (password == null)
+            {
+                return String.Empty;
             }
 
-            catch (IOException ioe)
+            IntPtr unmanagedString = IntPtr.Zero;
+            try
             {
-                Console.WriteLine("The file was not written.");
-                Console.WriteLine(ioe.Message);
-                Console.WriteLine(ioe.StackTrace);
+                unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(password);
+                return Marshal.PtrToStringUni(unmanagedString);
             }
 
             finally
             {
-                MessageVisibility = true;
+                Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
         }
     }
