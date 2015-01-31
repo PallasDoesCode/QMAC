@@ -2,9 +2,11 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
 using QMAC.Models;
+using SimpleImpersonation;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
@@ -70,31 +72,42 @@ namespace QMAC.ViewModel
                 var securePassword = passwordContainer.Password;
                 var password = ConvertToUnsecureString(securePassword);
 
-                string folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
-                string fileName = folder + "\\" + LocationsPicked + ".txt";
+                NetworkCredential credentials = new NetworkCredential();
+                credentials.UserName = Username;
+                credentials.Password = password;
+                credentials.Domain = "dcss.dekalbk12.org";
 
-                try
+                string folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
+
+                // Open the connection to the server
+                using (new NetworkConnection(folder, credentials))
                 {
-                    using (StreamWriter writer = new StreamWriter(fileName, true))
+                    foreach (string location in LocationsPicked)
                     {
-                        for (int i = 0; i < address.PhysicalAddresses.Count; i++)
+                        string fileName = folder + "\\" + location + ".txt";
+
+                        // Write out the lines to each text file
+                        try
                         {
-                            writer.WriteLine(address.PhysicalAddresses[i]);
+                            using (StreamWriter writer = new StreamWriter(fileName, true))
+                            {
+                                for (int i = 0; i < address.PhysicalAddresses.Count; i++)
+                                {
+                                    writer.WriteLine(address.PhysicalAddresses[i]);
+                                }
+                            }
+
+                            Message = "The MAC Address was exported successfully.";
+                        }
+
+                        catch (IOException ioe)
+                        {
+                            Console.WriteLine("The file was not written.");
+                            Console.WriteLine(ioe.Message);
+                            Console.WriteLine(ioe.StackTrace);
                         }
                     }
 
-                    Message = "The MAC Address was exported successfully.";
-                }
-
-                catch (IOException ioe)
-                {
-                    Console.WriteLine("The file was not written.");
-                    Console.WriteLine(ioe.Message);
-                    Console.WriteLine(ioe.StackTrace);
-                }
-
-                finally
-                {
                     MessageVisibility = true;
                 }
             }
