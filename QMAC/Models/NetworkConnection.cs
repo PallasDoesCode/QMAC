@@ -7,6 +7,15 @@ namespace QMAC.Models
 {
     class NetworkConnection : IDisposable
     {
+        /*
+         * 
+         *  This class was created in order to allow the application to make a connection to
+         *  a file server using network credentials.
+         *  
+         * Author: Luke Quinane
+         * Source: http://stackoverflow.com/questions/295538/how-to-provide-user-name-and-password-when-connecting-to-a-network-share/1197430#1197430
+         * 
+         */
         string _networkName;
 
         public NetworkConnection(string networkName, NetworkCredential credentials)
