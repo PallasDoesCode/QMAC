@@ -127,10 +127,16 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DLLs\GalaSoft.MvvmLight.dll" />
-    <EmbeddedResource Include="DLLs\GalaSoft.MvvmLight.Extras.dll" />
-    <EmbeddedResource Include="DLLs\Microsoft.Practices.ServiceLocation.dll" />
-    <EmbeddedResource Include="DLLs\System.Windows.Interactivity.dll" />
+    <EmbeddedResource Include="Resources\GalaSoft.MvvmLight.dll" />
+    <EmbeddedResource Include="Resources\GalaSoft.MvvmLight.Extras.dll" />
+    <EmbeddedResource Include="Resources\Microsoft.Practices.ServiceLocation.dll" />
+    <EmbeddedResource Include="Resources\System.Windows.Interactivity.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Save.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Close.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\packages\Fody.1.26.4\build\Fody.targets')" />
@@ -146,5 +152,12 @@
   </Target>
   <Target Name="AfterBuild">
   </Target>
+  <Target Name="AfterResolveReferences">
+	  <ItemGroup>
+		<EmbeddedResource Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.Extension)' == '.dll'">
+			<LogicalName>%(ReferenceCopyLocalPaths.DestinationSubDirectory)%(ReferenceCopyLocalPaths.Filename)%(ReferenceCopyLocalPaths.Extension)</LogicalName>
+		</EmbeddedResource>
+	  </ItemGroup>
+	</Target>
   -->
 </Project>

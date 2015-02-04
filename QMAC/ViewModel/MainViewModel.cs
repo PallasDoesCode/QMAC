@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Windows;
 
 namespace QMAC.ViewModel
 {
@@ -18,13 +18,13 @@ namespace QMAC.ViewModel
         Address address;
         Location location;
         private RelayCommand<object> _exportCommand;
+        private RelayCommand _closeCommand;
 
         public MainViewModel()
         {
             address = new Address();
             location = new Location();
 
-            LoadDLLResources();
             MessageVisibility = false;
         }
 
@@ -48,6 +48,19 @@ namespace QMAC.ViewModel
 
         public string Message { get; set; }
 
+        public RelayCommand CloseCommand
+        {
+            get
+            {
+                if (_closeCommand == null)
+                {
+                    _closeCommand = new RelayCommand(Close);
+                }
+
+                return _closeCommand;
+            }
+        }
+
         public RelayCommand<object> ExportCommand
         {
             get
@@ -62,6 +75,11 @@ namespace QMAC.ViewModel
                 return _exportCommand;
 
             }
+        }
+
+        public void Close()
+        {
+            this.Close();            
         }
 
         public void ExportList(object parameter)
@@ -131,21 +149,6 @@ namespace QMAC.ViewModel
             {
                 Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
-        }
-
-        private void LoadDLLResources()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += (ssender, args) =>
-                {
-                    string resourceName = "AssemblyLoadingAndReflection." + new AssemblyName(args.Name).Name + ".dll";
-
-                    using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-                    {
-                        Byte[] assemblyData = new byte[stream.Length];
-                        stream.Read(assemblyData, 0, assemblyData.Length);
-                        return Assembly.Load(assemblyData);
-                    }
-                };
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using QMAC.Models;
+using System;
+using System.Reflection;
 using System.Security;
 using System.Windows;
 
