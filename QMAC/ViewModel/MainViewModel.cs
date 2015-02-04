@@ -2,14 +2,13 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
 using QMAC.Models;
-using SimpleImpersonation;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Windows;
 
 namespace QMAC.ViewModel
 {
@@ -25,6 +24,7 @@ namespace QMAC.ViewModel
             address = new Address();
             location = new Location();
 
+            LoadDLLResources();
             MessageVisibility = false;
         }
 
@@ -131,6 +131,21 @@ namespace QMAC.ViewModel
             {
                 Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
+        }
+
+        private void LoadDLLResources()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += (ssender, args) =>
+                {
+                    string resourceName = "AssemblyLoadingAndReflection." + new AssemblyName(args.Name).Name + ".dll";
+
+                    using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+                    {
+                        Byte[] assemblyData = new byte[stream.Length];
+                        stream.Read(assemblyData, 0, assemblyData.Length);
+                        return Assembly.Load(assemblyData);
+                    }
+                };
         }
     }
 }
