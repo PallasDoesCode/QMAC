@@ -4,7 +4,8 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         x:Name="Window"
-        Title="QMAC" Width="554.779" ResizeMode="CanMinimize" Height="539" Icon="logo.ico" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}">
+        DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}"
+        Title="QMAC" Width="554.779" ResizeMode="CanMinimize" Height="539" Icon="logo.ico" >
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </Window.Resources>

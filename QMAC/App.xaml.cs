@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using System.Linq;
 
 namespace QMAC
 {
@@ -15,30 +16,21 @@ namespace QMAC
          * Found here: http://www.digitallycreated.net/Blog/61/combining-multiple-assemblies-into-a-single-exe-for-a-wpf-application
          */
 
-        private void OnStartup(object sender, StartupEventArgs e)
+        public App()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);  
         }
 
-        static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
+        static Assembly ResolveAssembly(object sender, ResolveEventArgs args)
         {
-            Assembly executingAssembly = Assembly.GetExecutingAssembly();
-	        AssemblyName assemblyName = new AssemblyName(args.Name);
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            string resourceName = executingAssembly.FullName.Split(',').First() + ".Resources." + new AssemblyName(args.Name).Name + ".dll";
 
-	        string path = assemblyName.Name + ".dll";
-	        if (assemblyName.CultureInfo.Equals(CultureInfo.InvariantCulture) == false)
+            using (var stream = executingAssembly.GetManifestResourceStream(resourceName))
 	        {
-	            path = String.Format(@"{0}\{1}", assemblyName.CultureInfo, path);
-	        }
-	 
-	        using (Stream stream = executingAssembly.GetManifestResourceStream(path))
-	        {
-	            if (stream == null)
-	                return null;
-	 
-	            byte[] assemblyRawBytes = new byte[stream.Length];
-	            stream.Read(assemblyRawBytes, 0, assemblyRawBytes.Length);
-	            return Assembly.Load(assemblyRawBytes);
+                byte[] assemblyData = new byte[stream.Length];
+                stream.Read(assemblyData, 0, assemblyData.Length);
+                return Assembly.Load(assemblyData);
 	        }
         }
     }
