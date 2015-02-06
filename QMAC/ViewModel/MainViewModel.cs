@@ -19,13 +19,12 @@ namespace QMAC.ViewModel
         Location location;
         private RelayCommand<object> _exportCommand;
         private RelayCommand _closeCommand;
+        private RelayCommand _localSaveCommand;
 
         public MainViewModel()
         {
             address = new Address();
             location = new Location();
-
-            MessageVisibility = false;
         }
 
         public List<string> LocationList
@@ -35,7 +34,9 @@ namespace QMAC.ViewModel
 
         public List<string> LocationsPicked { get; set; }
 
-        public bool MessageVisibility { get; set; }
+        public bool IsEnabled { get; set; }
+
+        public string AppState { get; set; }
 
         public string Username { get; set; }
 
@@ -47,6 +48,30 @@ namespace QMAC.ViewModel
         }
 
         public string Message { get; set; }
+
+        public RelayCommand LocalSaveCommand
+        {
+            get
+            {
+                if (_localSaveCommand == null)
+                {
+                    if (IsEnabled)
+                    {
+                        // Disables the username and password textboxes if local save is enabled
+                        IsEnabled = false;
+                    }
+
+                    else
+                    {
+                        IsEnabled = true;
+                    }
+                    _localSaveCommand = new RelayCommand<object>(UpdateStatusBar("Local Save Enabled"));
+                }
+
+                return _localSaveCommand;
+            }
+        }
+
 
         public RelayCommand CloseCommand
         {
@@ -75,6 +100,11 @@ namespace QMAC.ViewModel
                 return _exportCommand;
 
             }
+        }
+
+        public void UpdateStatusBar(string status)
+        {
+            AppState = status;
         }
 
         public void Close()
@@ -126,7 +156,7 @@ namespace QMAC.ViewModel
                         }
                     }
 
-                    MessageVisibility = true;
+                    IsEnabled = true;
                 }
             }
         }

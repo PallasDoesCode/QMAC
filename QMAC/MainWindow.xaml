@@ -14,39 +14,39 @@
             <cmd:EventToCommand Command="{Binding CloseCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
+
     <Grid Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" RenderTransformOrigin="0.593,0.948" Margin="0,0,0,1">
         <DockPanel>
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" IsMainMenu="True">
                 <MenuItem Header="_File" FontSize="16">
-                    <MenuItem Header="_Tools" FontSize="16" InputGestureText="Alt+F4">
+                    <MenuItem Header="_Save Locally" FontSize="16" InputGestureText="Ctrl+L" Command="{Binding LocalSaveCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/Save.ico" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="_Close" FontSize="16" InputGestureText="Alt+F4" Command="{Binding CloseCommand}">
                         <MenuItem.Icon>
                             <Image Source="Resources/Close.ico" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="_Tools" FontSize="16">
-                    <MenuItem Header="_Save Locally" FontSize="16" InputGestureText="Ctrl+L">
-                        <MenuItem.Icon>
-                            <Image Source="Resources/Save.ico" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </MenuItem>
             </Menu>
+            <StatusBar DockPanel.Dock="Bottom">
+                <TextBlock x:Name="statusTxtBlock" Text="{Binding AppState}" />
+            </StatusBar>
         </DockPanel>
-        
+
         <TextBlock x:Name="tbk_Address" HorizontalAlignment="Left" Margin="25,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Text="{Binding Address}" Height="21" Width="97"/>
 
-        <Label x:Name="usernameLabel" Content="Username" HorizontalAlignment="Left" Margin="316,61,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <TextBox x:Name="usernameTextbox" Text="{Binding Username}" HorizontalAlignment="Left" Height="31" Margin="316,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" FontSize="16"/>
+        <Label x:Name="usernameLabel" Content="Username" HorizontalAlignment="Left" Margin="316,86,0,0" VerticalAlignment="Top" FontSize="16" />
+        <TextBox x:Name="usernameTextbox" Text="{Binding Username}" HorizontalAlignment="Left" Height="31" Margin="316,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" FontSize="16" IsEnabled="{Binding IsEnabled}" />
 
-        <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="316,138,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <PasswordBox x:Name="passwordTextbox" HorizontalAlignment="Left" Height="31" Margin="316,169,0,0" VerticalAlignment="Top" Width="208" FontSize="16"/>
+        <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="316,158,0,0" VerticalAlignment="Top" FontSize="16" />
+        <PasswordBox x:Name="passwordTextbox" HorizontalAlignment="Left" Height="31" Margin="316,194,0,0" VerticalAlignment="Top" Width="208" FontSize="16" IsEnabled="{Binding IsEnabled}" />
 
         <ListBox x:Name="schoolListBox" HorizontalAlignment="Left" Margin="25,86,0,0" Width="274" FontSize="16" SelectionMode="Extended" ItemsSource="{Binding LocationList}" SelectedItem="{Binding LocationsPicked}" VerticalAlignment="Top" Height="364" />
         <Button x:Name="exportBtn" Content="Export" Margin="442,0,25,59" FontSize="16" RenderTransformOrigin="0.587,1.32" Height="29" VerticalAlignment="Bottom" Command="{Binding ExportCommand}" CommandParameter="{Binding ElementName=Window}" />
 
-        <TextBlock x:Name="tbk_AlertMessage" HorizontalAlignment="Left" Margin="25,0,0,25" TextWrapping="Wrap" Foreground="Red" FontWeight="Bold" VerticalAlignment="Bottom" FontSize="16" Text="Success! Your MAC address(es) were successfully exported!" Height="21" Width="445" Visibility="{Binding MessageVisibility, Converter={StaticResource VisibilityConverter}}"/>
-
+        <!-- <TextBlock x:Name="tbk_AlertMessage" HorizontalAlignment="Left" Margin="25,0,0,25" TextWrapping="Wrap" Foreground="Red" FontWeight="Bold" VerticalAlignment="Bottom" FontSize="16" Text="Success! Your MAC address(es) were successfully exported!" Height="21" Width="445" Visibility="{Binding MessageVisibility, Converter={StaticResource VisibilityConverter}}"/> -->
     </Grid>
 </Window>
