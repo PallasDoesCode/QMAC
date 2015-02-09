@@ -31,7 +31,7 @@
                     </MenuItem>
                 </MenuItem>
             </Menu>
-            <StatusBar DockPanel.Dock="Bottom">
+            <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
                 <TextBlock x:Name="statusTxtBlock" Text="{Binding AppState}" />
             </StatusBar>
         </DockPanel>
@@ -46,7 +46,5 @@
 
         <ListBox x:Name="schoolListBox" HorizontalAlignment="Left" Margin="25,86,0,0" Width="274" FontSize="16" SelectionMode="Extended" ItemsSource="{Binding LocationList}" SelectedItem="{Binding LocationsPicked}" VerticalAlignment="Top" Height="364" />
         <Button x:Name="exportBtn" Content="Export" Margin="442,0,25,59" FontSize="16" RenderTransformOrigin="0.587,1.32" Height="29" VerticalAlignment="Bottom" Command="{Binding ExportCommand}" CommandParameter="{Binding ElementName=Window}" />
-
-        <!-- <TextBlock x:Name="tbk_AlertMessage" HorizontalAlignment="Left" Margin="25,0,0,25" TextWrapping="Wrap" Foreground="Red" FontWeight="Bold" VerticalAlignment="Bottom" FontSize="16" Text="Success! Your MAC address(es) were successfully exported!" Height="21" Width="445" Visibility="{Binding MessageVisibility, Converter={StaticResource VisibilityConverter}}"/> -->
     </Grid>
 </Window>

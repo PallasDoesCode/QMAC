@@ -55,9 +55,8 @@ namespace QMAC.ViewModel
             {
                 if (_localSaveCommand == null)
                 {
-                    if (IsEnabled)
+                    if (IsEnabled == true)
                     {
-                        // Disables the username and password textboxes if local save is enabled
                         IsEnabled = false;
                     }
 
@@ -65,13 +64,13 @@ namespace QMAC.ViewModel
                     {
                         IsEnabled = true;
                     }
-                    _localSaveCommand = new RelayCommand<object>(UpdateStatusBar("Local Save Enabled"));
+
+                    _localSaveCommand = new RelayCommand(() => UpdateStatusBar("Local Save Enabled"));
                 }
 
                 return _localSaveCommand;
             }
         }
-
 
         public RelayCommand CloseCommand
         {
@@ -98,7 +97,6 @@ namespace QMAC.ViewModel
                 }
 
                 return _exportCommand;
-
             }
         }
 
@@ -125,7 +123,18 @@ namespace QMAC.ViewModel
                 credentials.Password = password;
                 credentials.Domain = "dcss.dekalbk12.org";
 
-                string folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
+                string folder = String.Empty;
+
+                if (IsEnabled)
+                {
+                    folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
+                }
+
+                else
+                {
+                    folder = "Whitelist\\";
+                }
+                
 
                 // Open the connection to the server
                 using (new NetworkConnection(folder, credentials))
@@ -144,8 +153,6 @@ namespace QMAC.ViewModel
                                     writer.WriteLine(address.PhysicalAddresses[i]);
                                 }
                             }
-
-                            Message = "The MAC Address was exported successfully.";
                         }
 
                         catch (IOException ioe)
@@ -156,7 +163,7 @@ namespace QMAC.ViewModel
                         }
                     }
 
-                    IsEnabled = true;
+                    UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
                 }
             }
         }
