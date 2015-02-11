@@ -55,15 +55,7 @@ namespace QMAC.ViewModel
             {
                 if (_localSaveCommand == null)
                 {
-                    if (IsEnabled == true)
-                    {
-                        IsEnabled = false;
-                    }
-
-                    else
-                    {
-                        IsEnabled = true;
-                    }
+                    //IsEnabled = !IsEnabled;
 
                     _localSaveCommand = new RelayCommand(() => UpdateStatusBar("Local Save Enabled"));
                 }
