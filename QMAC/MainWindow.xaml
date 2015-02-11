@@ -26,7 +26,7 @@
                     </MenuItem>
                     <MenuItem Header="_Close" FontSize="16" InputGestureText="Alt+F4" Command="{Binding CloseCommand}">
                         <MenuItem.Icon>
-                            <Image Source="Resources/Close.ico" />
+                            <Image Source="Resources/Close.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
