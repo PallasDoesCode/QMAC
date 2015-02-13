@@ -19,7 +19,7 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top" IsMainMenu="True">
                 <MenuItem Header="_File" FontSize="16">
-                    <MenuItem Header="_Save Locally" FontSize="16" InputGestureText="Ctrl+L" Command="{Binding LocalSaveCommand}">
+                    <MenuItem Header="_Save Locally" FontSize="16" InputGestureText="Ctrl+L" IsCheckable="True" IsChecked="{Binding LocalSaveIsChecked}">
                         <MenuItem.Icon>
                             <Image Source="Resources/Save.ico" />
                         </MenuItem.Icon>

@@ -19,12 +19,14 @@ namespace QMAC.ViewModel
         Location location;
         private RelayCommand<object> _exportCommand;
         private RelayCommand _closeCommand;
-        private RelayCommand _localSaveCommand;
+        private bool _saveIsChecked;
 
         public MainViewModel()
         {
             address = new Address();
             location = new Location();
+
+            IsEnabled = true;
         }
 
         public List<string> LocationList
@@ -49,18 +51,30 @@ namespace QMAC.ViewModel
 
         public string Message { get; set; }
 
-        public RelayCommand LocalSaveCommand
+        public bool LocalSaveIsChecked
         {
             get
             {
-                if (_localSaveCommand == null)
-                {
-                    //IsEnabled = !IsEnabled;
+                return _saveIsChecked;
+            }
 
-                    _localSaveCommand = new RelayCommand(() => UpdateStatusBar("Local Save Enabled"));
+            set
+            {
+                _saveIsChecked = value;
+
+                IsEnabled = !value;
+
+                if (value)
+                {
+                    UpdateStatusBar("Local Save Enabled");
                 }
 
-                return _localSaveCommand;
+                else
+                {
+                    UpdateStatusBar("Local Save Disabled");
+                }
+                
+                RaisePropertyChanged("LocalSaveCheck");
             }
         }
 
