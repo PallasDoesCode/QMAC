@@ -4,6 +4,7 @@ using PropertyChanged;
 using QMAC.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -119,58 +120,27 @@ namespace QMAC.ViewModel
         public void ExportList(object parameter)
         {
             var passwordContainer = parameter as IPassword;
-            if (passwordContainer != null)
+            NetworkCredential credentials;
+            string folder = String.Empty;
+
+            if (passwordContainer != null && IsEnabled == true)
             {
                 var securePassword = passwordContainer.Password;
                 var password = ConvertToUnsecureString(securePassword);
 
-                NetworkCredential credentials = new NetworkCredential();
+                credentials = new NetworkCredential();
                 credentials.UserName = Username;
                 credentials.Password = password;
                 credentials.Domain = "dcss.dekalbk12.org";
 
-                string folder = String.Empty;
+                folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
+                WriteToNetworkFolder(folder, credentials);
+            }
 
-                if (IsEnabled)
-                {
-                    folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
-                }
-
-                else
-                {
-                    folder = "Whitelist\\";
-                }
-                
-
-                // Open the connection to the server
-                using (new NetworkConnection(folder, credentials))
-                {
-                    foreach (string location in LocationsPicked)
-                    {
-                        string fileName = folder + "\\" + location + ".txt";
-
-                        // Write out the lines to each text file
-                        try
-                        {
-                            using (StreamWriter writer = new StreamWriter(fileName, true))
-                            {
-                                for (int i = 0; i < address.PhysicalAddresses.Count; i++)
-                                {
-                                    writer.WriteLine(address.PhysicalAddresses[i]);
-                                }
-                            }
-                        }
-
-                        catch (IOException ioe)
-                        {
-                            Console.WriteLine("The file was not written.");
-                            Console.WriteLine(ioe.Message);
-                            Console.WriteLine(ioe.StackTrace);
-                        }
-                    }
-
-                    UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
-                }
+            else
+            {
+                folder = "Whitelist\\";
+                WriteToLocalFolder(folder);
             }
         }
 
@@ -192,6 +162,68 @@ namespace QMAC.ViewModel
             {
                 Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
+        }
+
+        private void WriteToNetworkFolder(string folder, NetworkCredential credentials)
+        {
+            // Open the connection to the server
+            using (new NetworkConnection(folder, credentials))
+            {
+                foreach (string location in LocationsPicked)
+                {
+                    string fileName = folder + "\\" + location + ".txt";
+
+                    // Write out the lines to each text file
+                    try
+                    {
+                        using (StreamWriter writer = new StreamWriter(fileName, true))
+                        {
+                            for (int i = 0; i < address.PhysicalAddresses.Count; i++)
+                            {
+                                writer.WriteLine(address.PhysicalAddresses[i]);
+                            }
+                        }
+                    }
+
+                    catch (IOException ioe)
+                    {
+                        Console.WriteLine("The file was not written.");
+                        Console.WriteLine(ioe.Message);
+                        Console.WriteLine(ioe.StackTrace);
+                    }
+                }
+
+                UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
+            }
+        }
+
+        private void WriteToLocalFolder(string folder)
+        {
+            foreach (string location in LocationsPicked)
+            {
+                string fileName = folder + "\\" + location + ".txt";
+
+                // Write out the lines to each text file
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter(fileName, true))
+                    {
+                        for (int i = 0; i < address.PhysicalAddresses.Count; i++)
+                        {
+                            writer.WriteLine(address.PhysicalAddresses[i]);
+                        }
+                    }
+                }
+
+                catch (IOException ioe)
+                {
+                    Console.WriteLine("The file was not written.");
+                    Console.WriteLine(ioe.Message);
+                    Console.WriteLine(ioe.StackTrace);
+                }
+            }
+
+            UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
         }
     }
 }

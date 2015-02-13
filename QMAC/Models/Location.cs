@@ -36,6 +36,9 @@ namespace QMAC.Models
             site_list.Add("Sylvania High School");
             site_list.Add("Tech School (DCTC)");
             site_list.Add("Valley Head High School");
+
+            site_list.Add("Test Location 1");
+            site_list.Add("Test Location 2");
             return site_list;
         }
     }
