@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace QMAC.Models
 {
@@ -34,15 +35,19 @@ namespace QMAC.Models
                 ? credentials.UserName
                 : string.Format(@"{0}\{1}", credentials.Domain, credentials.UserName);
 
-            var result = WNetAddConnection2(
-                netResource,
-                credentials.Password,
-                userName,
-                0);
 
-            if (result != 0)
+            try
             {
-                throw new Win32Exception(result, "Error connecting to remote share");
+                var result = WNetAddConnection2(
+                    netResource,
+                    credentials.Password,
+                    userName,
+                    0);
+            }
+
+            catch(Win32Exception e)
+            {
+                MessageBox.Show("Error connecting to the remote share.\n" + e.Message);
             }
         }
 

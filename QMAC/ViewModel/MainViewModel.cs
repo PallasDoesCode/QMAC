@@ -18,6 +18,7 @@ namespace QMAC.ViewModel
     {
         Address address;
         Location location;
+        SystemInfo system;
         private RelayCommand<object> _exportCommand;
         private RelayCommand _closeCommand;
         private bool _saveIsChecked;
@@ -26,6 +27,7 @@ namespace QMAC.ViewModel
         {
             address = new Address();
             location = new Location();
+            system = new SystemInfo();
 
             IsEnabled = true;
         }
@@ -45,9 +47,9 @@ namespace QMAC.ViewModel
 
         public SecureString Password { get; set; }
 
-        public string Address
+        public string SystemInformation
         {
-            get { return address.IPAddress; }
+            get { return (system.ComputerName + " - " + address.IPAddress); }
         }
 
         public string Message { get; set; }
