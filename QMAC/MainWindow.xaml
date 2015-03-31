@@ -36,7 +36,7 @@
             </StatusBar>
         </DockPanel>
 
-        <TextBlock x:Name="tbk_Address" HorizontalAlignment="Left" Margin="25,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Text="{Binding Address}" Height="21" Width="97"/>
+        <TextBlock x:Name="tbk_Address" HorizontalAlignment="Left" Margin="25,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Text="{Binding SystemInformation}" Height="21" Width="274"/>
 
         <Label x:Name="usernameLabel" Content="Username" HorizontalAlignment="Left" Margin="316,86,0,0" VerticalAlignment="Top" FontSize="16" />
         <TextBox x:Name="usernameTextbox" Text="{Binding Username}" HorizontalAlignment="Left" Height="31" Margin="316,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" FontSize="16" IsEnabled="{Binding IsEnabled}" />
