@@ -22,7 +22,7 @@ namespace QMAC.ViewModel
         private RelayCommand<object> _exportCommand;
         private RelayCommand _closeCommand;
         private bool _saveIsChecked;
-        private int NumberOfItemsSelected;
+        //private int NumberOfItemsSelected;
 
         public MainViewModel()
         {
@@ -142,11 +142,10 @@ namespace QMAC.ViewModel
             if (passwordContainer != null && IsEnabled == true)
             {
                 var securePassword = passwordContainer.Password;
-                var password = ConvertToUnsecureString(securePassword);
 
                 credentials = new NetworkCredential();
                 credentials.UserName = Username;
-                credentials.Password = password;
+                credentials.SecurePassword = securePassword;
                 credentials.Domain = "dcss.dekalbk12.org";
 
                 folder = "\\\\10.12.232.20\\TechDept\\Whitelist";
@@ -157,26 +156,6 @@ namespace QMAC.ViewModel
             {
                 folder = "Whitelist\\";
                 WriteToLocalFolder(folder);
-            }
-        }
-
-        private string ConvertToUnsecureString(SecureString password)
-        {
-            if (password == null)
-            {
-                return String.Empty;
-            }
-
-            IntPtr unmanagedString = IntPtr.Zero;
-            try
-            {
-                unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(password);
-                return Marshal.PtrToStringUni(unmanagedString);
-            }
-
-            finally
-            {
-                Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
         }
 
