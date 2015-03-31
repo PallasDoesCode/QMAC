@@ -3,13 +3,13 @@ using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
 using QMAC.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Windows;
 
 namespace QMAC.ViewModel
 {
@@ -21,6 +21,7 @@ namespace QMAC.ViewModel
         private RelayCommand<object> _exportCommand;
         private RelayCommand _closeCommand;
         private bool _saveIsChecked;
+        private int NumberOfItemsSelected;
 
         public MainViewModel()
         {
@@ -30,12 +31,18 @@ namespace QMAC.ViewModel
             IsEnabled = true;
         }
 
-        public List<string> LocationList
+        public ObservableCollection<string> LocationList
         {
-            get { return location.site; }
+            get { return location.Sites; }
         }
 
-        public List<string> LocationsPicked { get; set; }
+        //public IEnumerable<string> SelectedItems
+        //{
+        //    get
+        //    {
+        //        return Items.Where(x => x.IsSelected);
+        //    }
+        //}
 
         public bool IsEnabled { get; set; }
 
@@ -63,6 +70,13 @@ namespace QMAC.ViewModel
             {
                 _saveIsChecked = value;
 
+                /*
+                 * By default the Local Save feature is disabled because of this
+                 * we want to set the login textboxes IsEnabled feature to be opposite
+                 * of the local save. That way when the application is launched the 
+                 * local save feature is disabled and the login feature is enabled then
+                 * when the local save feature is turned on the login feature will be disabled
+                 */
                 IsEnabled = !value;
 
                 if (value)
@@ -169,59 +183,59 @@ namespace QMAC.ViewModel
             // Open the connection to the server
             using (new NetworkConnection(folder, credentials))
             {
-                foreach (string location in LocationsPicked)
-                {
-                    string fileName = folder + "\\" + location + ".txt";
+            //    foreach (var location in SelectedItems)
+            //    {
+            //        string fileName = folder + "\\" + location + ".txt";
 
-                    // Write out the lines to each text file
-                    try
-                    {
-                        using (StreamWriter writer = new StreamWriter(fileName, true))
-                        {
-                            for (int i = 0; i < address.PhysicalAddresses.Count; i++)
-                            {
-                                writer.WriteLine(address.PhysicalAddresses[i]);
-                            }
-                        }
-                    }
+            //        // Write out the lines to each text file
+            //        try
+            //        {
+            //            using (StreamWriter writer = new StreamWriter(fileName, true))
+            //            {
+            //                for (int i = 0; i < address.PhysicalAddresses.Count; i++)
+            //                {
+            //                    writer.WriteLine(address.PhysicalAddresses[i]);
+            //                }
+            //            }
+            //        }
 
-                    catch (IOException ioe)
-                    {
-                        Console.WriteLine("The file was not written.");
-                        Console.WriteLine(ioe.Message);
-                        Console.WriteLine(ioe.StackTrace);
-                    }
-                }
+            //        catch (IOException ioe)
+            //        {
+            //            Console.WriteLine("The file was not written.");
+            //            Console.WriteLine(ioe.Message);
+            //            Console.WriteLine(ioe.StackTrace);
+            //        }
+            //    }
 
-                UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
+            //    UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
             }
         }
 
         private void WriteToLocalFolder(string folder)
         {
-            foreach (string location in LocationsPicked)
-            {
-                string fileName = folder + "\\" + location + ".txt";
+            //foreach (var location in SelectedItems)
+            //{
+            //    string fileName = folder + "\\" + location + ".txt";
 
-                // Write out the lines to each text file
-                try
-                {
-                    using (StreamWriter writer = new StreamWriter(fileName, true))
-                    {
-                        for (int i = 0; i < address.PhysicalAddresses.Count; i++)
-                        {
-                            writer.WriteLine(address.PhysicalAddresses[i]);
-                        }
-                    }
-                }
+            //    // Write out the lines to each text file
+            //    try
+            //    {
+            //        using (StreamWriter writer = new StreamWriter(fileName, true))
+            //        {
+            //            for (int i = 0; i < address.PhysicalAddresses.Count; i++)
+            //            {
+            //                writer.WriteLine(address.PhysicalAddresses[i]);
+            //            }
+            //        }
+            //    }
 
-                catch (IOException ioe)
-                {
-                    Console.WriteLine("The file was not written.");
-                    Console.WriteLine(ioe.Message);
-                    Console.WriteLine(ioe.StackTrace);
-                }
-            }
+            //    catch (IOException ioe)
+            //    {
+            //        Console.WriteLine("The file was not written.");
+            //        Console.WriteLine(ioe.Message);
+            //        Console.WriteLine(ioe.StackTrace);
+            //    }
+            //}
 
             UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
         }

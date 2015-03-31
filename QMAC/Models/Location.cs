@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -7,21 +8,21 @@ namespace QMAC.Models
 {
     class Location
     {
-        List<string> _sites;
+        ObservableCollection<string> _sites;
 
         public Location()
         {
             _sites = getSites();
         }
 
-        public List<string> site
+        public ObservableCollection<string> Sites
         {
             get { return _sites; }
         }
 
-        private List<String> getSites()
+        private ObservableCollection<String> getSites()
         {
-            List<string> site_list = new List<string>();
+            ObservableCollection<string> site_list = new ObservableCollection<string>();
             site_list.Add("Collinsville High School");
             site_list.Add("Crossville Elem School");
             site_list.Add("Crossville Middle School");
