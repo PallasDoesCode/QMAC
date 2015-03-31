@@ -22,7 +22,6 @@ namespace QMAC.ViewModel
         private RelayCommand<object> _exportCommand;
         private RelayCommand _closeCommand;
         private bool _saveIsChecked;
-        //private int NumberOfItemsSelected;
 
         public MainViewModel()
         {
@@ -38,15 +37,16 @@ namespace QMAC.ViewModel
             get { return location.Sites; }
         }
 
-        //public IEnumerable<string> SelectedItems
-        //{
-        //    get
-        //    {
-        //        return Items.Where(x => x.IsSelected);
-        //    }
-        //}
+        public IEnumerable<string> SelectedItems
+        {
+            get
+            {
+                return Items.Where(x => x.IsSelected);
+            }
+        }
 
         public bool IsEnabled { get; set; }
+
 
         public string AppState { get; set; }
 
