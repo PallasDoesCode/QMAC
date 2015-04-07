@@ -81,6 +81,7 @@
     <Compile Include="Models\IPassword.cs" />
     <Compile Include="Models\NetworkConnection.cs" />
     <Compile Include="Models\SystemInfo.cs" />
+    <Compile Include="ControlFixes\ListBoxFix.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

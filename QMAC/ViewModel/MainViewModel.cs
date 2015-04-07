@@ -37,16 +37,9 @@ namespace QMAC.ViewModel
             get { return location.Sites; }
         }
 
-        public IEnumerable<string> SelectedItems
-        {
-            get
-            {
-                return Items.Where(x => x.IsSelected);
-            }
-        }
+        public List<string> SelectedLocations { get; set; }
 
         public bool IsEnabled { get; set; }
-
 
         public string AppState { get; set; }
 
@@ -116,7 +109,7 @@ namespace QMAC.ViewModel
                 {
                     // We are passing the o object to the DelegateCommand class and telling it
                     // to execute the ExportList method.
-                    _exportCommand = new RelayCommand<object>(ExportList);
+                    //_exportCommand = new RelayCommand<object>(ExportList);
                 }
 
                 return _exportCommand;

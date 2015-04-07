@@ -1,8 +1,10 @@
 ﻿<Window x:Class="QMAC.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+        xmlns:fix="clr-namespace:QMAC.ControlFixes"
         x:Name="Window"
         DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}"
         Title="QMAC" Width="554.779" ResizeMode="CanMinimize" Height="539" Icon="logo.ico" >
@@ -44,13 +46,8 @@
         <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="316,158,0,0" VerticalAlignment="Top" FontSize="16" />
         <PasswordBox x:Name="passwordTextbox" HorizontalAlignment="Left" Height="31" Margin="316,194,0,0" VerticalAlignment="Top" Width="208" FontSize="16" IsEnabled="{Binding IsEnabled}" />
 
-        <ListView x:Name="schoolListBox" HorizontalAlignment="Left" Margin="25,86,0,0" Width="274" FontSize="16" SelectionMode="Extended" ItemsSource="{Binding LocationList}" VerticalAlignment="Top" Height="364">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}" />
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+        <ListBox x:Name="schoolListBox" HorizontalAlignment="Left" Margin="25,86,0,0" Width="274" FontSize="16" SelectionMode="Extended"
+                 ItemsSource="{Binding LocationList}" fix:ListBoxFix.SelectedItemsBinding="{Binding SelectedLocations}"  VerticalAlignment="Top" Height="364"></ListBox>
         <Button x:Name="exportBtn" Content="Export" Margin="442,0,25,59" FontSize="16" RenderTransformOrigin="0.587,1.32" Height="29" VerticalAlignment="Bottom" Command="{Binding ExportCommand}" CommandParameter="{Binding ElementName=Window}" />
     </Grid>
 </Window>
