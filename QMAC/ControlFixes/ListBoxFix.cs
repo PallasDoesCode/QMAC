@@ -7,12 +7,12 @@ namespace QMAC.ControlFixes
     {
         public static bool GetSelectedItemsBinding(ListBox element)
         {
-            return (bool)element.GetValue(SelectedItemsBindingProperty);
+            return (bool)element.GetValue(SelectedItemsProperty);
         }
 
         public static void SetSelectedItemsBinding(ListBox element, bool value)
         {
-            element.SetValue(SelectedItemsBindingProperty, value);
+            element.SetValue(SelectedItemsProperty, value);
             if (value)
             {
                 element.SelectionChanged += (sender, args) =>
@@ -22,7 +22,7 @@ namespace QMAC.ControlFixes
             }
         }
 
-        public static readonly DependencyProperty SelectedItemsBindingProperty =
+        public static readonly DependencyProperty SelectedItemsProperty =
             DependencyProperty.RegisterAttached("SelectedItemsBinding",
             typeof(bool), typeof(ListBoxFix), new PropertyMetadata(false));
     }
