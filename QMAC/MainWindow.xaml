@@ -5,11 +5,13 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:fix="clr-namespace:QMAC.ControlFixes"
+        xmlns:vm="clr-namespace:QMAC.ViewModel"
         x:Name="Window"
         DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}"
         Title="QMAC" Width="554.779" ResizeMode="CanMinimize" Height="539" Icon="logo.ico" >
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+        <vm:CustomMultiValueConverter x:Key="MultiValueConverter"></vm:CustomMultiValueConverter>
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Close">

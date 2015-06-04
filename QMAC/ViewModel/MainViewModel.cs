@@ -109,7 +109,7 @@ namespace QMAC.ViewModel
                 {
                     // We are passing the o object to the DelegateCommand class and telling it
                     // to execute the ExportList method.
-                    //_exportCommand = new RelayCommand<object>(ExportList);
+                    _exportCommand = new RelayCommand<object>(ExportList);
                 }
 
                 return _exportCommand;

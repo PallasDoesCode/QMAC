@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace QMAC.ViewModel
 {
-    class MultiValueConverter : IMultiValueConverter
+    class CustomMultiValueConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
