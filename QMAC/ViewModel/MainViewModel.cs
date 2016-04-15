@@ -3,10 +3,8 @@ using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
 using QMAC.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -19,6 +17,7 @@ namespace QMAC.ViewModel
         Address address;
         Location location;
         SystemInfo system;
+        public List<string> selectedItems;
         private RelayCommand<object> _exportCommand;
         private RelayCommand _closeCommand;
         private bool _saveIsChecked;
@@ -29,6 +28,7 @@ namespace QMAC.ViewModel
             location = new Location();
             system = new SystemInfo();
 
+            selectedItems = new List<string>();
             IsEnabled = true;
         }
 
@@ -37,15 +37,13 @@ namespace QMAC.ViewModel
             get { return location.Sites; }
         }
 
-        public List<string> SelectedLocations { get; set; }
-
         public bool IsEnabled { get; set; }
 
         public string AppState { get; set; }
 
         public string Username { get; set; }
 
-        public SecureString Password { get; set; }
+        public SecureString PasswordSecureString { get; set; }
 
         public string SystemInformation
         {
@@ -53,6 +51,18 @@ namespace QMAC.ViewModel
         }
 
         public string Message { get; set; }
+
+        public List<string> SelectedLocations
+        {
+            get
+            {
+                return selectedItems;
+            }
+            set
+            {
+                selectedItems = value;
+            }
+        }
 
         public bool LocalSaveIsChecked
         {
@@ -109,7 +119,7 @@ namespace QMAC.ViewModel
                 {
                     // We are passing the o object to the DelegateCommand class and telling it
                     // to execute the ExportList method.
-                    _exportCommand = new RelayCommand<object>(ExportList);
+                    _exportCommand = new RelayCommand<object>( (o) => ExportList(PasswordSecureString));
                 }
 
                 return _exportCommand;
@@ -136,6 +146,8 @@ namespace QMAC.ViewModel
             {
                 var securePassword = passwordContainer.Password;
 
+                System.Windows.MessageBox.Show(ConvertToUnsecureString(securePassword));
+
                 credentials = new NetworkCredential();
                 credentials.UserName = Username;
                 credentials.SecurePassword = securePassword;
@@ -147,6 +159,13 @@ namespace QMAC.ViewModel
 
             else
             {
+                if (passwordContainer == null)
+                    System.Windows.MessageBox.Show("passwordContainer is null");
+
+                System.Windows.MessageBox.Show("Danger Will Robinson! Danger!\npasswordContainer:" + passwordContainer + "\n" + 
+                    "IsEnabled: " + IsEnabled);
+
+
                 folder = "Whitelist\\";
                 WriteToLocalFolder(folder);
             }
@@ -157,7 +176,7 @@ namespace QMAC.ViewModel
             // Open the connection to the server
             using (new NetworkConnection(folder, credentials))
             {
-            //    foreach (var location in SelectedItems)
+            //    foreach (var location in SelectedLocations)
             //    {
             //        string fileName = folder + "\\" + location + ".txt";
 
@@ -181,13 +200,13 @@ namespace QMAC.ViewModel
             //        }
             //    }
 
-            //    UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
+                UpdateStatusBar("Success! Your MAC address(es) were successfully exported to the server!");
             }
         }
 
         private void WriteToLocalFolder(string folder)
         {
-            //foreach (var location in SelectedItems)
+            //foreach (var location in SelectedLocations)
             //{
             //    string fileName = folder + "\\" + location + ".txt";
 
@@ -211,7 +230,24 @@ namespace QMAC.ViewModel
             //    }
             //}
 
-            UpdateStatusBar("Success! Your MAC address(es) were successfully exported!");
+            UpdateStatusBar("Success! Your MAC address(es) were successfully exported to the specified folder!");
+        }
+
+        public string ConvertToUnsecureString(SecureString securePassword)
+        {
+            if (securePassword == null)
+                throw new ArgumentNullException("securePassword");
+
+            IntPtr unmanagedString = IntPtr.Zero;
+            try
+            {
+                unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(securePassword);
+                return Marshal.PtrToStringUni(unmanagedString);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
+            }
         }
     }
 }

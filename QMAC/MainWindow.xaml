@@ -46,18 +46,14 @@
         <TextBox x:Name="usernameTextbox" Text="{Binding Username}" HorizontalAlignment="Left" Height="31" Margin="316,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" FontSize="16" IsEnabled="{Binding IsEnabled}" />
 
         <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="316,158,0,0" VerticalAlignment="Top" FontSize="16" />
-        <PasswordBox x:Name="passwordTextbox" HorizontalAlignment="Left" Height="31" Margin="316,194,0,0" VerticalAlignment="Top" Width="208" FontSize="16" IsEnabled="{Binding IsEnabled}" />
+        <PasswordBox x:Name="passwordTextbox" HorizontalAlignment="Left" Height="31" Margin="316,194,0,0" VerticalAlignment="Top" Width="208"
+                     FontSize="16" IsEnabled="{Binding IsEnabled}" vm:PasswordBoxAttachedProperty.EncryptedPassword="{Binding PasswordSecureString, Mode=Twoway, UpdateSourceTrigger=PropertyChanged}" PasswordChanged="passwordTextbox_PasswordChanged" />
 
         <ListBox x:Name="schoolListBox" HorizontalAlignment="Left" Margin="25,86,0,0" Width="274" FontSize="16" SelectionMode="Extended"
-                 ItemsSource="{Binding LocationList}" fix:ListBoxFix.SelectedItemsBinding="{Binding SelectedLocations}"  VerticalAlignment="Top" Height="364"></ListBox>
+                 ItemsSource="{Binding LocationList, NotifyOnSourceUpdated=True}" SelectedItem="{Binding Path=SelectedLocations}" SelectionChanged="schoolListBox_SelectionChanged" VerticalAlignment="Top" Height="364"></ListBox>
+
         <Button x:Name="exportBtn" Content="Export" Margin="442,0,25,59" FontSize="16" RenderTransformOrigin="0.587,1.32" Height="29" VerticalAlignment="Bottom"
                 Command="{Binding ExportCommand}">
-            <Button.CommandParameter>
-                <MultiBinding Converter="{StaticResource MultiValueConverter}">
-                    <Binding ElementName="Window"/>
-                    <Binding Path="SelectedItemsBinding" />
-                </MultiBinding>
-            </Button.CommandParameter>
         </Button>
     </Grid>
 </Window>
