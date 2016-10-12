@@ -1,0 +1,26 @@
+{
+  "name": "qmac",
+  "version": "1.0.0",
+  "description": "A simple desktop app used to quckly export the MAC address for all network adapters.",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tyler Hughes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RandomlyKnighted/QMAC"
+  },
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "del": "^2.2.0",
+    "electron-prebuilt": "^1.4.3",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-traceur": "^0.17.2",
+    "gulp-webserver": "^0.9.1"
+  }
+}
