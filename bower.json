@@ -1,0 +1,30 @@
+{
+  "name": "QMAC",
+  "description": "A simple desktop app used to quckly export the MAC address for all network adapters.",
+  "main": "app.js",
+  "authors": [
+    "Tyler Hughes"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "desktop",
+    "app",
+    "electron",
+    "MAC",
+    "address",
+    "network",
+    "adapters"
+  ],
+  "homepage": "https://github.com/RandomlyKnighted/QMAC",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

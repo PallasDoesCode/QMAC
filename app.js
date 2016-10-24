@@ -1,12 +1,13 @@
-var electron = require( "electron" );
+const electron = require( "electron" );
+require('electron-reload')(__dirname);
 
 // Module to control application life.
-var app = electron.app;
+const app = electron.app;
 
 // Module to create native browser window.
-var BrowserWindow = electron.BrowserWindow;
+const BrowserWindow = electron.BrowserWindow;
 
-var mainWindows = null;
+let mainWindow;
 
 app.on( "ready", function() {
     // Create the browser window
@@ -17,6 +18,9 @@ app.on( "ready", function() {
 
     // and load the index.html of the app.
     mainWindow.loadURL( "file://" + __dirname + "/index.html" );
+
+    // Open Chrome DevTools
+    mainWindow.openDevTools( { detach: true } );
 } );
 
 app.on( "browser-window-created", function( e, window ) {

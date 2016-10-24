@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 #deviceInfo, #schoolListing {
     margin: 0 0 0 20px;
 }
