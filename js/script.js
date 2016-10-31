@@ -4,6 +4,7 @@ var hostname = os.hostname();
 
 var hostnameElement = document.getElementById("hostname");
 var interfaceElement = document.getElementById("interfaces");
+var exportButton = document.getElementById("exportBtn");
 
 
 var GetNetworkInfo = function () {
@@ -43,3 +44,18 @@ var interfaceList = GetNetworkInfo();
 
 hostnameElement.innerHTML += hostname;
 interfaceElement.innerHTML = interfaceList[0].address;
+
+exportButton.addEventListener("click", function() {
+    console.log("Exported!!");
+    /*
+        var fs = require('fs');
+        fs.writeFile("/tmp/test", "Hey there!", function(err) {
+            if(err) {
+                return console.log(err);
+            }
+
+            console.log("The file was saved!");
+        });
+    */
+});
+
